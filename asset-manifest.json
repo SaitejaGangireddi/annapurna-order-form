@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/annapurna-order-form/static/css/main.5a74733f.css",
+    "main.js": "/annapurna-order-form/static/js/main.15ce432c.js",
+    "static/js/977.d703b8a0.chunk.js": "/annapurna-order-form/static/js/977.d703b8a0.chunk.js",
+    "static/js/455.17d437dc.chunk.js": "/annapurna-order-form/static/js/455.17d437dc.chunk.js",
+    "index.html": "/annapurna-order-form/index.html",
+    "main.5a74733f.css.map": "/annapurna-order-form/static/css/main.5a74733f.css.map",
+    "main.15ce432c.js.map": "/annapurna-order-form/static/js/main.15ce432c.js.map",
+    "977.d703b8a0.chunk.js.map": "/annapurna-order-form/static/js/977.d703b8a0.chunk.js.map",
+    "455.17d437dc.chunk.js.map": "/annapurna-order-form/static/js/455.17d437dc.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5a74733f.css",
+    "static/js/main.15ce432c.js"
+  ]
+}
