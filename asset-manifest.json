@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/annapurna-order-form/static/css/main.5de5bde3.css",
-    "main.js": "/annapurna-order-form/static/js/main.47e8e1bb.js",
+    "main.js": "/annapurna-order-form/static/js/main.c502e673.js",
     "index.html": "/annapurna-order-form/index.html",
     "main.5de5bde3.css.map": "/annapurna-order-form/static/css/main.5de5bde3.css.map",
-    "main.47e8e1bb.js.map": "/annapurna-order-form/static/js/main.47e8e1bb.js.map"
+    "main.c502e673.js.map": "/annapurna-order-form/static/js/main.c502e673.js.map"
   },
   "entrypoints": [
     "static/css/main.5de5bde3.css",
-    "static/js/main.47e8e1bb.js"
+    "static/js/main.c502e673.js"
   ]
 }
