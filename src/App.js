@@ -164,11 +164,11 @@ function App() {
         companyTable,
       ];
 
-      // Add drops and item tables
+      // Add Loadings and item tables
       formData.loadings.forEach((load, i) => {
         children.push(
           new Paragraph({
-            text: `Drop ${i + 1}`,
+            text: `Loading ${i + 1}`,
             heading: HeadingLevel.HEADING_2,
             spacing: { before: 200, after: 100 },
             children: [new TextRun({ color: "1E90FF", bold: true })],
@@ -277,10 +277,10 @@ function App() {
           </select>
         </div>
 
-        {/* Drop Sections */}
+        {/* Loading Sections */}
         {formData.loadings.map((load, i) => (
           <div key={i} className="mt-6 p-4 border border-brandGreen bg-brandLightGreen/10 rounded-lg">
-            <h2 className="font-bold mb-2 text-brandGreen">Drop {i + 1}</h2>
+            <h2 className="font-bold mb-2 text-brandGreen">Loading {i + 1}</h2>
             <input
               type="text"
               name="partyName"
