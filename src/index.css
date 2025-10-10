@@ -2,72 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 🌿 Global Styling */
+/* Global Colors */
 body {
-  @apply font-body bg-gradient-to-b from-green-50 to-lime-100 text-gray-800;
-  background-attachment: fixed;
+  @apply bg-brandGray text-brandText font-body;
 }
 
-/* 🌾 Scrollbar styling for better UX */
 ::-webkit-scrollbar {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #e8f5e9;
+  background: #f1f8e9;
 }
-::-webkit-scrollbar-thumb {
-  background-color: #43a047; /* rich green */
-  border-radius: 6px;
-}
-
-/* 🌻 Headings */
-h1, h2, h3 {
-  @apply font-bold;
-  color: #1b5e20; /* dark organic green */
-}
-
-/* ✍️ Input, Textarea, Select */
-input, textarea, select {
-  @apply w-full border rounded-lg px-3 py-2;
-  border-color: #a5d6a7;
-  transition: all 0.2s ease-in-out;
-}
-
-input:focus, textarea:focus, select:focus {
-  outline: none;
-  border-color: #388e3c;
-  box-shadow: 0 0 0 3px rgba(56, 142, 60, 0.25);
-}
-
-/* 🌱 Buttons */
-button {
-  @apply rounded-xl px-5 py-2 font-semibold transition-all duration-300;
-}
-
-button:hover {
-  transform: scale(1.03);
-  filter: brightness(1.1);
-}
-
-/* 🍃 Card containers / form boxes */
-.card {
-  @apply bg-white rounded-2xl shadow-lg p-6 border;
-  border-color: #c8e6c9;
-}
-
-/* 🌼 Links */
-a {
-  @apply text-green-700 font-medium;
-}
-a:hover {
-  text-decoration: underline;
-}
-
-/* ☀️ Utility highlight (for tags, totals, etc.) */
-.highlight {
-  background-color: #fff8e1;
-  color: #f57f17;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 6px;
-}
+/* Removed incomplete ::-webkit-scrollbar selector */
