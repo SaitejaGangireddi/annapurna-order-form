@@ -2,15 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Global Colors */
+/* Global Colors & Font */
 body {
   @apply bg-brandGray text-brandText font-body;
 }
 
+/* Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 10px;
 }
+
 ::-webkit-scrollbar-track {
   background: #f1f8e9;
+  border-radius: 10px;
 }
-/* Removed incomplete ::-webkit-scrollbar selector */
+
+::-webkit-scrollbar-thumb {
+  background: #a3d977;
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7cb342;
+}
+
+/* Smooth Transitions */
+button, input, select, textarea {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+/* Hover effects */
+button:hover {
+  @apply cursor-pointer;
+}
+
+input:focus, select:focus, textarea:focus {
+  @apply ring-2 ring-brandGreen outline-none;
+}
+
+/* Table Rows Hover (for non-Framer Motion fallback) */
+table tr:hover {
+  background-color: rgba(162, 223, 147, 0.3); /* light green hover */
+  transition: background-color 0.3s ease;
+}

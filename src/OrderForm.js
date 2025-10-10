@@ -15,6 +15,7 @@ import {
   ImageRun,
   WidthType,
 } from "docx";
+import { motion } from "framer-motion";
 
 function OrderForm() {
   const [formData, setFormData] = useState({
@@ -33,18 +34,18 @@ function OrderForm() {
 
   const formRef = useRef();
 
-  // ✅ Load saved data
+  // Load saved data
   useEffect(() => {
     const saved = localStorage.getItem("annapurnaOrderForm");
     if (saved) setFormData(JSON.parse(saved));
   }, []);
 
-  // ✅ Save data automatically
+  // Save data automatically
   useEffect(() => {
     localStorage.setItem("annapurnaOrderForm", JSON.stringify(formData));
   }, [formData]);
 
-  // ✅ Handle input changes
+  // Handle input changes
   const handleChange = (e, loadingIndex = null, itemIndex = null, field = null) => {
     const { name, value } = e.target;
 
@@ -81,7 +82,7 @@ function OrderForm() {
     }
   };
 
-  // ✅ Generate PDF
+  // Generate PDF
   const generatePDF = async () => {
     const input = formRef.current;
     const canvas = await html2canvas(input, { scale: 2 });
@@ -93,7 +94,7 @@ function OrderForm() {
     pdf.save("Annapurna_Order_Form.pdf");
   };
 
-  // ✅ Generate Word document
+  // Generate Word
   const generateWord = async () => {
     try {
       const logoResponse = await fetch(`${process.env.PUBLIC_URL}/logo.png`);
@@ -148,7 +149,6 @@ function OrderForm() {
       });
 
       const children = [
-        // Header with Logo
         new Paragraph({
           alignment: AlignmentType.CENTER,
           children: [
@@ -158,7 +158,6 @@ function OrderForm() {
             }),
           ],
         }),
-        // Title
         new Paragraph({
           alignment: AlignmentType.CENTER,
           spacing: { after: 200 },
@@ -174,7 +173,6 @@ function OrderForm() {
         companyInfoTable,
       ];
 
-      // Loadings
       formData.loadings.forEach((load, i) => {
         children.push(
           new Paragraph({
@@ -188,7 +186,6 @@ function OrderForm() {
         children.push(new Paragraph({ text: `Delivery Address: ${load.deliveryAddress}`, bold: true }));
         children.push(new Paragraph({ text: `Consignee Phone Number: ${load.phone}`, bold: true }));
 
-        // Table for items
         const itemRows = [
           new TableRow({
             children: [
@@ -219,7 +216,6 @@ function OrderForm() {
         );
       });
 
-      // Footer notes
       children.push(new Paragraph(`\nOther Requirements/Note: ${formData.otherRequirements}`));
       children.push(new Paragraph(`Note: ${formData.note}`));
       children.push(new Paragraph(`Signature: ${formData.signature}`));
@@ -240,9 +236,12 @@ function OrderForm() {
 
   return (
     <div className="min-h-screen bg-brandGray p-6 flex justify-center">
-      <div
+      <motion.div
         ref={formRef}
         className="w-full max-w-5xl bg-white rounded-2xl shadow-lg p-8 border border-brandGreen"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
       >
         {/* Header */}
         <div className="flex items-center mb-6 bg-brandLightGreen p-4 rounded-lg shadow-md">
@@ -266,7 +265,7 @@ function OrderForm() {
             { label: "Date", name: "date", type: "date" },
             { label: "TWB Order No", name: "twbOrder", type: "text" },
           ].map((field, i) => (
-            <input
+            <motion.input
               key={i}
               type={field.type}
               name={field.name}
@@ -274,14 +273,18 @@ function OrderForm() {
               value={formData[field.name]}
               onChange={handleChange}
               className="border border-brandGreen p-2 rounded focus:ring-2 focus:ring-brandGreen bg-brandGray/30"
+              whileFocus={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
             />
           ))}
 
-          <select
+          <motion.select
             name="numberOfLoadings"
             value={formData.numberOfLoadings}
             onChange={handleChange}
             className="border border-brandGreen p-2 rounded focus:ring-2 focus:ring-brandGreen bg-brandGray/30"
+            whileFocus={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
           >
             <option value="">Select Number of Loadings</option>
             {[...Array(10)].map((_, i) => (
@@ -289,14 +292,17 @@ function OrderForm() {
                 {i + 1}
               </option>
             ))}
-          </select>
+          </motion.select>
         </div>
 
         {/* Loadings */}
         {formData.loadings.map((load, i) => (
-          <div
+          <motion.div
             key={i}
             className="mt-6 p-4 border border-brandGreen bg-brandLightGreen/10 rounded-lg"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: i * 0.1 }}
           >
             <h2 className="font-bold mb-2 text-brandGreen">
               Loading {i + 1}
@@ -330,7 +336,13 @@ function OrderForm() {
               Items
             </h3>
             {load.items.map((item, idx) => (
-              <div key={idx} className="grid grid-cols-3 gap-2 mb-2">
+              <motion.div
+                key={idx}
+                className="grid grid-cols-3 gap-2 mb-2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.2, delay: idx * 0.05 }}
+              >
                 <input
                   type="text"
                   placeholder="Variety"
@@ -352,9 +364,9 @@ function OrderForm() {
                   onChange={(e) => handleChange(e, i, idx, "quantity")}
                   className="border border-brandGreen p-2 rounded bg-white focus:ring-2 focus:ring-brandGreen"
                 />
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         ))}
 
         {/* Notes */}
@@ -386,20 +398,26 @@ function OrderForm() {
 
         {/* Buttons */}
         <div className="flex flex-col md:flex-row gap-4 mt-6">
-          <button
+          <motion.button
             onClick={generateWord}
             className="bg-brandYellow hover:bg-yellow-400 text-brandText font-bold p-3 rounded w-full shadow-md"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.2 }}
           >
             Download as Word
-          </button>
-          <button
+          </motion.button>
+          <motion.button
             onClick={generatePDF}
             className="bg-brandGreen hover:bg-green-700 text-white font-bold p-3 rounded w-full shadow-md"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.2 }}
           >
             Download as PDF
-          </button>
+          </motion.button>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

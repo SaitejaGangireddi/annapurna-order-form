@@ -6,6 +6,7 @@
   "dependencies": {
     "docx": "^7.8.2",
     "file-saver": "^2.0.5",
+    "framer-motion": "^12.23.23",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.3",
     "react": "^18.2.0",
