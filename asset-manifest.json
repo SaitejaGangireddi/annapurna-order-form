@@ -1,13 +1,17 @@
 {
   "files": {
-    "main.css": "/annapurna-order-form/static/css/main.5de5bde3.css",
-    "main.js": "/annapurna-order-form/static/js/main.c502e673.js",
+    "main.css": "/annapurna-order-form/static/css/main.40738c6e.css",
+    "main.js": "/annapurna-order-form/static/js/main.f4f5844f.js",
+    "static/js/977.d703b8a0.chunk.js": "/annapurna-order-form/static/js/977.d703b8a0.chunk.js",
+    "static/js/455.17d437dc.chunk.js": "/annapurna-order-form/static/js/455.17d437dc.chunk.js",
     "index.html": "/annapurna-order-form/index.html",
-    "main.5de5bde3.css.map": "/annapurna-order-form/static/css/main.5de5bde3.css.map",
-    "main.c502e673.js.map": "/annapurna-order-form/static/js/main.c502e673.js.map"
+    "main.40738c6e.css.map": "/annapurna-order-form/static/css/main.40738c6e.css.map",
+    "main.f4f5844f.js.map": "/annapurna-order-form/static/js/main.f4f5844f.js.map",
+    "977.d703b8a0.chunk.js.map": "/annapurna-order-form/static/js/977.d703b8a0.chunk.js.map",
+    "455.17d437dc.chunk.js.map": "/annapurna-order-form/static/js/455.17d437dc.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.5de5bde3.css",
-    "static/js/main.c502e673.js"
+    "static/css/main.40738c6e.css",
+    "static/js/main.f4f5844f.js"
   ]
 }
