@@ -3,21 +3,12 @@ import { saveAs } from "file-saver";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import {
-  Document,
-  Packer,
-  Paragraph,
-  TextRun,
-  Table,
-  TableRow,
-  TableCell,
-  AlignmentType,
-  HeadingLevel,
-  ImageRun,
-  WidthType,
+  Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
+  AlignmentType, HeadingLevel, ImageRun, WidthType,
 } from "docx";
 import { motion } from "framer-motion";
 
-function OrderForm() {
+export default function OrderForm() {
   const [formData, setFormData] = useState({
     companyName: "Tiyasa Agro PVT.LTD",
     address: "Amodpur, West Bengal 721126",
@@ -34,21 +25,17 @@ function OrderForm() {
 
   const formRef = useRef();
 
-  // Load saved data
   useEffect(() => {
     const saved = localStorage.getItem("annapurnaOrderForm");
     if (saved) setFormData(JSON.parse(saved));
   }, []);
 
-  // Save data automatically
   useEffect(() => {
     localStorage.setItem("annapurnaOrderForm", JSON.stringify(formData));
   }, [formData]);
 
-  // Handle input changes
   const handleChange = (e, loadingIndex = null, itemIndex = null, field = null) => {
     const { name, value } = e.target;
-
     if (loadingIndex !== null && itemIndex !== null && field) {
       const newData = { ...formData };
       newData.loadings[loadingIndex].items[itemIndex] = {
@@ -72,9 +59,7 @@ function OrderForm() {
           partyName: "",
           deliveryAddress: "",
           phone: "",
-          items: Array(7)
-            .fill(null)
-            .map(() => ({ variety: "", packing: "", quantity: "" })),
+          items: Array(7).fill(null).map(() => ({ variety: "", packing: "", quantity: "" })),
         }));
       setFormData({ ...formData, numberOfLoadings: value, loadings: newLoadings });
     } else {
@@ -82,7 +67,6 @@ function OrderForm() {
     }
   };
 
-  // Generate PDF
   const generatePDF = async () => {
     const input = formRef.current;
     const canvas = await html2canvas(input, { scale: 2 });
@@ -94,332 +78,146 @@ function OrderForm() {
     pdf.save("Annapurna_Order_Form.pdf");
   };
 
-  // Generate Word
   const generateWord = async () => {
     try {
+      // fetch logo from public and convert to arrayBuffer
       const logoResponse = await fetch(`${process.env.PUBLIC_URL}/logo.png`);
+      if (!logoResponse.ok) throw new Error("Logo not found in public folder");
       const logoBuffer = await logoResponse.arrayBuffer();
 
       const companyInfoTable = new Table({
         width: { size: 100, type: WidthType.PERCENTAGE },
         rows: [
-          new TableRow({
-            children: [
-              new TableCell({ children: [new Paragraph("Company Name")], shading: { fill: "DCE6F1" } }),
-              new TableCell({ children: [new Paragraph(formData.companyName)] }),
-            ],
-          }),
-          new TableRow({
-            children: [
-              new TableCell({ children: [new Paragraph("Address")], shading: { fill: "DCE6F1" } }),
-              new TableCell({ children: [new Paragraph(formData.address)] }),
-            ],
-          }),
-          new TableRow({
-            children: [
-              new TableCell({ children: [new Paragraph("GST No")], shading: { fill: "DCE6F1" } }),
-              new TableCell({ children: [new Paragraph(formData.gst)] }),
-            ],
-          }),
-          new TableRow({
-            children: [
-              new TableCell({ children: [new Paragraph("State")], shading: { fill: "DCE6F1" } }),
-              new TableCell({ children: [new Paragraph(formData.state)] }),
-            ],
-          }),
-          new TableRow({
-            children: [
-              new TableCell({ children: [new Paragraph("Date")], shading: { fill: "DCE6F1" } }),
-              new TableCell({ children: [new Paragraph(formData.date)] }),
-            ],
-          }),
-          new TableRow({
-            children: [
-              new TableCell({ children: [new Paragraph("TWB Order No")], shading: { fill: "DCE6F1" } }),
-              new TableCell({ children: [new Paragraph(formData.twbOrder)] }),
-            ],
-          }),
-          new TableRow({
-            children: [
-              new TableCell({ children: [new Paragraph("Number of Loadings")], shading: { fill: "DCE6F1" } }),
-              new TableCell({ children: [new Paragraph(formData.numberOfLoadings)] }),
-            ],
-          }),
+          new TableRow({ children: [ new TableCell({ children: [new Paragraph("Company Name")], shading: { fill: "E6F8EF" } }), new TableCell({ children: [new Paragraph(formData.companyName)] }) ] }),
+          new TableRow({ children: [ new TableCell({ children: [new Paragraph("Address")], shading: { fill: "E6F8EF" } }), new TableCell({ children: [new Paragraph(formData.address)] }) ] }),
+          new TableRow({ children: [ new TableCell({ children: [new Paragraph("GST No")], shading: { fill: "E6F8EF" } }), new TableCell({ children: [new Paragraph(formData.gst)] }) ] }),
+          new TableRow({ children: [ new TableCell({ children: [new Paragraph("State")], shading: { fill: "E6F8EF" } }), new TableCell({ children: [new Paragraph(formData.state)] }) ] }),
+          new TableRow({ children: [ new TableCell({ children: [new Paragraph("Date")], shading: { fill: "E6F8EF" } }), new TableCell({ children: [new Paragraph(formData.date)] }) ] }),
+          new TableRow({ children: [ new TableCell({ children: [new Paragraph("TWB Order No")], shading: { fill: "E6F8EF" } }), new TableCell({ children: [new Paragraph(formData.twbOrder)] }) ] }),
+          new TableRow({ children: [ new TableCell({ children: [new Paragraph("Number of Loadings")], shading: { fill: "E6F8EF" } }), new TableCell({ children: [new Paragraph(formData.numberOfLoadings)] }) ] }),
         ],
       });
 
       const children = [
         new Paragraph({
           alignment: AlignmentType.CENTER,
-          children: [
-            new ImageRun({
-              data: logoBuffer,
-              transformation: { width: 140, height: 70 },
-            }),
-          ],
+          children: [ new ImageRun({ data: logoBuffer, transformation: { width: 140, height: 70 } }) ],
         }),
         new Paragraph({
           alignment: AlignmentType.CENTER,
           spacing: { after: 200 },
-          children: [
-            new TextRun({
-              text: "Annapurna Seeds ORDER FORM",
-              bold: true,
-              size: 32,
-              color: "0B5394",
-            }),
-          ],
+          children: [ new TextRun({ text: "Annapurna Seeds ORDER FORM", bold: true, size: 32, color: "2F855A" }) ],
         }),
         companyInfoTable,
       ];
 
       formData.loadings.forEach((load, i) => {
-        children.push(
-          new Paragraph({
-            text: `\nLoading ${i + 1}`,
-            heading: HeadingLevel.HEADING_2,
-            spacing: { before: 300, after: 100 },
-            alignment: AlignmentType.LEFT,
-          })
-        );
+        children.push(new Paragraph({ text: `\nLoading ${i + 1}`, heading: HeadingLevel.HEADING_2 }));
         children.push(new Paragraph({ text: `Party Name: ${load.partyName}`, bold: true }));
         children.push(new Paragraph({ text: `Delivery Address: ${load.deliveryAddress}`, bold: true }));
         children.push(new Paragraph({ text: `Consignee Phone Number: ${load.phone}`, bold: true }));
 
         const itemRows = [
-          new TableRow({
+          new TableRow({ children: [ new TableCell({ children: [new Paragraph({ text: "S.No", bold: true })] }), new TableCell({ children: [new Paragraph({ text: "Variety", bold: true })] }), new TableCell({ children: [new Paragraph({ text: "Packing", bold: true })] }), new TableCell({ children: [new Paragraph({ text: "Quantity", bold: true })] }) ] }),
+          ...load.items.map((item, idx) => new TableRow({
             children: [
-              new TableCell({ children: [new Paragraph({ text: "S.No", bold: true })] }),
-              new TableCell({ children: [new Paragraph({ text: "Variety", bold: true })] }),
-              new TableCell({ children: [new Paragraph({ text: "Packing", bold: true })] }),
-              new TableCell({ children: [new Paragraph({ text: "Quantity", bold: true })] }),
+              new TableCell({ children: [new Paragraph(String(idx + 1))] }),
+              new TableCell({ children: [new Paragraph(item.variety || "")] }),
+              new TableCell({ children: [new Paragraph(item.packing || "")] }),
+              new TableCell({ children: [new Paragraph(item.quantity || "")] }),
             ],
-          }),
-          ...load.items.map(
-            (item, idx) =>
-              new TableRow({
-                children: [
-                  new TableCell({ children: [new Paragraph(String(idx + 1))] }),
-                  new TableCell({ children: [new Paragraph(item.variety || "")] }),
-                  new TableCell({ children: [new Paragraph(item.packing || "")] }),
-                  new TableCell({ children: [new Paragraph(item.quantity || "")] }),
-                ],
-              })
-          ),
+          })),
         ];
 
-        children.push(
-          new Table({
-            rows: itemRows,
-            width: { size: 100, type: WidthType.PERCENTAGE },
-          })
-        );
+        children.push(new Table({ rows: itemRows, width: { size: 100, type: WidthType.PERCENTAGE } }));
       });
 
       children.push(new Paragraph(`\nOther Requirements/Note: ${formData.otherRequirements}`));
       children.push(new Paragraph(`Note: ${formData.note}`));
       children.push(new Paragraph(`Signature: ${formData.signature}`));
 
-      const doc = new Document({
-        creator: "Annapurna Seeds",
-        title: "Order Form",
-        sections: [{ children }],
-      });
-
+      const doc = new Document({ creator: "Annapurna Seeds", title: "Order Form", sections: [{ children }] });
       const blob = await Packer.toBlob(doc);
       saveAs(blob, "Annapurna_Order_Form.docx");
-    } catch (error) {
-      console.error("Error generating document:", error);
-      alert("Failed to generate Word document. Please check the console.");
+    } catch (err) {
+      console.error("Word generation error:", err);
+      alert("Failed to generate Word document. Check console for details.");
     }
   };
 
   return (
-    <div className="min-h-screen bg-brandGray p-6 flex justify-center">
-      <motion.div
-        ref={formRef}
-        className="w-full max-w-5xl bg-white rounded-2xl shadow-lg p-8 border border-brandGreen"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        {/* Header */}
-        <div className="flex items-center mb-6 bg-brandLightGreen p-4 rounded-lg shadow-md">
-          <img
-            src={`${process.env.PUBLIC_URL}/logo.png`}
-            alt="Annapurna Seeds"
-            className="h-16 mr-4 rounded"
-          />
-          <h1 className="text-3xl font-bold text-brandGreen">
-            Annapurna Seeds ORDER FORM
-          </h1>
-        </div>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.45 }}>
+      <div className="max-w-4xl mx-auto">
+        <motion.div className="bg-white rounded-2xl shadow-soft p-8 border border-cardBorder animate-floatIn"
+          initial={{ scale: 0.995, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.45 }}>
+          {/* header */}
+          <div className="flex items-center gap-4 mb-6">
+            <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo" className="h-14 w-auto rounded" />
+            <div>
+              <h2 className="text-2xl font-heading font-semibold text-textDark">Annapurna Seeds</h2>
+              <p className="text-sm text-muted">Order Form</p>
+            </div>
+          </div>
 
-        {/* Company Info */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {[
-            { label: "Company Name", name: "companyName", type: "text" },
-            { label: "Address", name: "address", type: "text" },
-            { label: "GST No", name: "gst", type: "text" },
-            { label: "State", name: "state", type: "text" },
-            { label: "Date", name: "date", type: "date" },
-            { label: "TWB Order No", name: "twbOrder", type: "text" },
-          ].map((field, i) => (
-            <motion.input
-              key={i}
-              type={field.type}
-              name={field.name}
-              placeholder={field.label}
-              value={formData[field.name]}
-              onChange={handleChange}
-              className="border border-brandGreen p-2 rounded focus:ring-2 focus:ring-brandGreen bg-brandGray/30"
-              whileFocus={{ scale: 1.02 }}
-              transition={{ duration: 0.2 }}
-            />
-          ))}
-
-          <motion.select
-            name="numberOfLoadings"
-            value={formData.numberOfLoadings}
-            onChange={handleChange}
-            className="border border-brandGreen p-2 rounded focus:ring-2 focus:ring-brandGreen bg-brandGray/30"
-            whileFocus={{ scale: 1.02 }}
-            transition={{ duration: 0.2 }}
-          >
-            <option value="">Select Number of Loadings</option>
-            {[...Array(10)].map((_, i) => (
-              <option key={i + 1} value={i + 1}>
-                {i + 1}
-              </option>
-            ))}
-          </motion.select>
-        </div>
-
-        {/* Loadings */}
-        {formData.loadings.map((load, i) => (
-          <motion.div
-            key={i}
-            className="mt-6 p-4 border border-brandGreen bg-brandLightGreen/10 rounded-lg"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: i * 0.1 }}
-          >
-            <h2 className="font-bold mb-2 text-brandGreen">
-              Loading {i + 1}
-            </h2>
-            <input
-              type="text"
-              name="partyName"
-              placeholder="Party Name"
-              value={load.partyName}
-              onChange={(e) => handleChange(e, i)}
-              className="border border-brandGreen p-2 rounded mb-2 w-full bg-white focus:ring-2 focus:ring-brandGreen"
-            />
-            <input
-              type="text"
-              name="deliveryAddress"
-              placeholder="Delivery Address"
-              value={load.deliveryAddress}
-              onChange={(e) => handleChange(e, i)}
-              className="border border-brandGreen p-2 rounded mb-2 w-full bg-white focus:ring-2 focus:ring-brandGreen"
-            />
-            <input
-              type="text"
-              name="phone"
-              placeholder="Consignee Phone Number"
-              value={load.phone}
-              onChange={(e) => handleChange(e, i)}
-              className="border border-brandGreen p-2 rounded mb-2 w-full bg-white focus:ring-2 focus:ring-brandGreen"
-            />
-
-            <h3 className="font-semibold mt-2 mb-1 text-brandGreen">
-              Items
-            </h3>
-            {load.items.map((item, idx) => (
-              <motion.div
-                key={idx}
-                className="grid grid-cols-3 gap-2 mb-2"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.2, delay: idx * 0.05 }}
-              >
-                <input
-                  type="text"
-                  placeholder="Variety"
-                  value={item.variety}
-                  onChange={(e) => handleChange(e, i, idx, "variety")}
-                  className="border border-brandGreen p-2 rounded bg-white focus:ring-2 focus:ring-brandGreen"
+          {/* company grid */}
+          <div ref={formRef}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                { name: "companyName", placeholder: "Company Name", type: "text" },
+                { name: "address", placeholder: "Address", type: "text" },
+                { name: "gst", placeholder: "GST No", type: "text" },
+                { name: "state", placeholder: "State", type: "text" },
+                { name: "date", placeholder: "Date", type: "date" },
+                { name: "twbOrder", placeholder: "TWB Order No", type: "text" },
+              ].map((f) => (
+                <input key={f.name}
+                  name={f.name}
+                  type={f.type}
+                  placeholder={f.placeholder}
+                  value={formData[f.name]}
+                  onChange={handleChange}
+                  className="border p-2 rounded-lg bg-gray-50 border-cardBorder focus:ring-2 focus:ring-accent"
                 />
-                <input
-                  type="text"
-                  placeholder="Packing Size"
-                  value={item.packing}
-                  onChange={(e) => handleChange(e, i, idx, "packing")}
-                  className="border border-brandGreen p-2 rounded bg-white focus:ring-2 focus:ring-brandGreen"
-                />
-                <input
-                  type="text"
-                  placeholder="Required Quantity"
-                  value={item.quantity}
-                  onChange={(e) => handleChange(e, i, idx, "quantity")}
-                  className="border border-brandGreen p-2 rounded bg-white focus:ring-2 focus:ring-brandGreen"
-                />
+              ))}
+
+              <select name="numberOfLoadings" value={formData.numberOfLoadings} onChange={handleChange}
+                className="border p-2 rounded-lg bg-gray-50 border-cardBorder focus:ring-2 focus:ring-accent">
+                <option value="">Select Number of Loadings</option>
+                {[...Array(10)].map((_, i) => <option key={i+1} value={i+1}>{i+1}</option>)}
+              </select>
+            </div>
+
+            {/* loadings */}
+            {formData.loadings.map((load, li) => (
+              <motion.div key={li} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: li * 0.07 }} className="mt-6 p-4 bg-stripe border border-cardBorder rounded-lg">
+                <h3 className="text-lg font-semibold text-primary mb-3">Loading {li + 1}</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+                  <input name="partyName" placeholder="Party Name" value={load.partyName} onChange={(e) => handleChange(e, li)} className="border p-2 rounded" />
+                  <input name="deliveryAddress" placeholder="Delivery Address" value={load.deliveryAddress} onChange={(e) => handleChange(e, li)} className="border p-2 rounded" />
+                  <input name="phone" placeholder="Consignee Phone Number" value={load.phone} onChange={(e) => handleChange(e, li)} className="border p-2 rounded" />
+                </div>
+
+                <div className="space-y-2">
+                  {load.items.map((item, idx) => (
+                    <div key={idx} className="grid grid-cols-3 gap-2">
+                      <input placeholder="Variety" value={item.variety} onChange={(e) => handleChange(e, li, idx, "variety")} className="border p-2 rounded" />
+                      <input placeholder="Packing" value={item.packing} onChange={(e) => handleChange(e, li, idx, "packing")} className="border p-2 rounded" />
+                      <input placeholder="Quantity" type="number" value={item.quantity} onChange={(e) => handleChange(e, li, idx, "quantity")} className="border p-2 rounded" />
+                    </div>
+                  ))}
+                </div>
               </motion.div>
             ))}
-          </motion.div>
-        ))}
 
-        {/* Notes */}
-        <textarea
-          placeholder="Any Other Requirements / Note"
-          value={formData.otherRequirements}
-          onChange={(e) =>
-            setFormData({ ...formData, otherRequirements: e.target.value })
-          }
-          className="border border-brandGreen p-2 rounded w-full mt-4 bg-white focus:ring-2 focus:ring-brandGreen"
-        ></textarea>
+            <textarea name="otherRequirements" placeholder="Other Requirements / Note" value={formData.otherRequirements} onChange={handleChange} className="mt-4 w-full border p-2 rounded" />
 
-        <textarea
-          placeholder="Note"
-          value={formData.note}
-          onChange={(e) => setFormData({ ...formData, note: e.target.value })}
-          className="border border-brandGreen p-2 rounded w-full mt-4 bg-white focus:ring-2 focus:ring-brandGreen"
-        ></textarea>
-
-        <input
-          type="text"
-          placeholder="Signature"
-          value={formData.signature}
-          onChange={(e) =>
-            setFormData({ ...formData, signature: e.target.value })
-          }
-          className="border border-brandGreen p-2 rounded w-full mt-4 bg-white focus:ring-2 focus:ring-brandGreen"
-        />
-
-        {/* Buttons */}
-        <div className="flex flex-col md:flex-row gap-4 mt-6">
-          <motion.button
-            onClick={generateWord}
-            className="bg-brandYellow hover:bg-yellow-400 text-brandText font-bold p-3 rounded w-full shadow-md"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-          >
-            Download as Word
-          </motion.button>
-          <motion.button
-            onClick={generatePDF}
-            className="bg-brandGreen hover:bg-green-700 text-white font-bold p-3 rounded w-full shadow-md"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-          >
-            Download as PDF
-          </motion.button>
-        </div>
-      </motion.div>
-    </div>
+            <div className="mt-6 flex gap-3">
+              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }} onClick={generatePDF} className="bg-primary text-white px-5 py-2 rounded shadow">Download PDF</motion.button>
+              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }} onClick={generateWord} className="bg-earth text-white px-5 py-2 rounded shadow">Download Word</motion.button>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </motion.div>
   );
 }
-
-export default OrderForm;

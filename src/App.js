@@ -1,42 +1,78 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import OrderForm from "./OrderForm";
 import PackingDataAnalyzer from "./PackingDataAnalyzer";
+import LeftoverBags from "./LeftoverBags"; // 👈 new file we'll add
 
-function App() {
+function AnimatedRoutes() {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.div
+        key={location.pathname}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        transition={{ duration: 0.45 }}
+      >
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<OrderForm />} />
+          <Route path="/analyzer" element={<PackingDataAnalyzer />} />
+          <Route path="/leftover" element={<LeftoverBags />} /> {/* 👈 new route */}
+        </Routes>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
+export default function App() {
   return (
     <Router basename="/annapurna-order-form">
-      <div className="min-h-screen bg-brandGray font-body text-brandText">
-        {/* Navbar */}
-        <nav className="bg-brandGreen text-white p-4 shadow-md flex justify-between items-center">
-          <div className="flex items-center space-x-3">
-            <img
-              src={`${process.env.PUBLIC_URL}/logo.png`}
-              alt="Logo"
-              className="h-10 w-auto rounded"
-            />
-            <h1 className="font-bold text-xl tracking-wide">Annapurna Seeds</h1>
-          </div>
-          <div className="space-x-6 font-semibold">
-            <Link to="/" className="hover:text-brandYellow transition">
-              📝 Order Form
-            </Link>
-            <Link to="/analyzer" className="hover:text-brandYellow transition">
-              📊 Data Analyzer
-            </Link>
+      <div className="min-h-screen">
+        <nav className="bg-headerDark text-white shadow-md">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center h-16">
+              <div className="flex items-center space-x-3">
+                <img
+                  src={`${process.env.PUBLIC_URL}/logo.png`}
+                  alt="Annapurna"
+                  className="h-9 w-auto rounded-md shadow-sm"
+                />
+                <span className="text-lg font-heading font-semibold">
+                  Annapurna Seeds
+                </span>
+              </div>
+              <div className="flex items-center space-x-6">
+                <Link
+                  to="/"
+                  className="flex items-center gap-2 text-sm hover:text-accent transition"
+                >
+                  <span>📝</span> <span>Order Form</span>
+                </Link>
+                <Link
+                  to="/analyzer"
+                  className="flex items-center gap-2 text-sm hover:text-accent transition"
+                >
+                  <span>📊</span> <span>Data Analyzer</span>
+                </Link>
+                <Link
+                  to="/leftover"
+                  className="flex items-center gap-2 text-sm hover:text-accent transition"
+                >
+                  <span>📦</span> <span>Leftover Bags</span>
+                </Link>
+              </div>
+            </div>
           </div>
         </nav>
 
-        {/* Routes */}
-        <div className="p-6">
-          <Routes>
-            <Route path="/" element={<OrderForm />} />
-            <Route path="/analyzer" element={<PackingDataAnalyzer />} />
-          </Routes>
-        </div>
+        <main className="py-8 px-4">
+          <div className="max-w-7xl mx-auto">
+            <AnimatedRoutes />
+          </div>
+        </main>
       </div>
     </Router>
   );
 }
-
-export default App;

@@ -2,47 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Global Colors & Font */
+/* Global background + text */
 body {
-  @apply bg-brandGray text-brandText font-body;
+  @apply bg-bgSoft text-textDark font-body;
 }
 
-/* Scrollbar Styling */
-::-webkit-scrollbar {
-  width: 10px;
-}
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #f1f6f4; border-radius: 10px; }
+::-webkit-scrollbar-thumb { background: #BEEAD6; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #9CE6BE; }
 
-::-webkit-scrollbar-track {
-  background: #f1f8e9;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #a3d977;
-  border-radius: 10px;
-  transition: background 0.3s ease;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #7cb342;
-}
-
-/* Smooth Transitions */
+/* Smooth base transitions */
 button, input, select, textarea {
-  @apply transition-all duration-300 ease-in-out;
+  @apply transition-all duration-200 ease-in-out;
 }
 
-/* Hover effects */
-button:hover {
-  @apply cursor-pointer;
+/* Input focus */
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  box-shadow: 0 6px 18px rgba(47,133,90,0.08);
+  border-color: #2F855A;
 }
 
-input:focus, select:focus, textarea:focus {
-  @apply ring-2 ring-brandGreen outline-none;
-}
+/* Table hover */
+table tr:hover { background: rgba(79,209,169,0.08); transition: background 0.18s; }
 
-/* Table Rows Hover (for non-Framer Motion fallback) */
-table tr:hover {
-  background-color: rgba(162, 223, 147, 0.3); /* light green hover */
-  transition: background-color 0.3s ease;
-}
+/* Card animation fallback */
+.card-appear { animation: floatIn 0.45s ease-out both; }
